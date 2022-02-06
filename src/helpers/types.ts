@@ -20,3 +20,8 @@ export interface SumVector {
     azimuth: number,
     value: number
 }
+
+export interface MaterialPoint {
+    vector: Vector,
+    mass: number
+}
