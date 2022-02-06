@@ -3,7 +3,7 @@ export interface Point {
     y: number
 }
 
-export interface Azimuth {
+export interface Direction {
     azimuth: number,
     distance: number
 }
@@ -22,6 +22,9 @@ export interface SumVector {
 }
 
 export interface MaterialPoint {
-    vector: Vector,
+    id: number,
+    name: string,
+    prevVector: Vector,
+    nextVector: Vector,
     mass: number
 }
