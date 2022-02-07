@@ -24,8 +24,8 @@ export const MainContextProvider: FC = ({children}) => {
         setPoints(prevState => [...prevState, point]);
     }
 
-    const removePoint = (id: number | string) => {
-        setPoints(prevState => prevState.filter(item => item.id !== id));
+    const removePoint = (point: MaterialPoint) => {
+        setPoints(prevState => prevState.filter(item => item.id !== point.id));
     }
 
     const replacePoints = (points: MaterialPoint[]) => {
