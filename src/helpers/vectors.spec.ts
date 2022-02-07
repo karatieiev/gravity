@@ -2,10 +2,7 @@ import '@testing-library/jest-dom';
 import {calcMovement, getDirection, getDistance, invertAzimuth, sumVectors, syncVectors} from "./vectors";
 import {MaterialPoint, Point} from "./types";
 
-const center: Point = {
-    x: 0,
-    y: 0
-}
+const center: Point = { x: 0, y: 0 }
 
 describe('vectors', () => {
 
