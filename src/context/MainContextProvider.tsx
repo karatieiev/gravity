@@ -5,14 +5,16 @@ interface ContextProps {
     materialPoints: MaterialPoint[],
     addPoint: Function,
     removePoint: Function,
-    updatePoints: Function
+    replacePoints: Function,
+    updatePoint: Function
 }
 
 const MainContext = createContext<ContextProps>({
     materialPoints: [],
     addPoint: () => {},
     removePoint: () => {},
-    updatePoints: () => {}
+    replacePoints: () => {},
+    updatePoint: () => {}
 });
 
 export const MainContextProvider: FC = ({children}) => {
@@ -26,12 +28,18 @@ export const MainContextProvider: FC = ({children}) => {
         setPoints(prevState => prevState.filter(item => item.id !== id));
     }
 
-    const updatePoints = (points: MaterialPoint[]) => {
+    const replacePoints = (points: MaterialPoint[]) => {
         setPoints(points);
     }
 
+    const updatePoint = (point: MaterialPoint) => {
+        setPoints(prevState => [...prevState.filter(item => item.id !== point.id), point]);
+    }
+
     return (
-        <MainContext.Provider value={{materialPoints, addPoint, removePoint, updatePoints}}>
+        <MainContext.Provider value={{
+            materialPoints, addPoint, removePoint, replacePoints, updatePoint
+        }}>
             {children}
         </MainContext.Provider>
     )
