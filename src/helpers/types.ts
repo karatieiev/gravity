@@ -22,7 +22,7 @@ export interface SumVector {
 }
 
 export interface MaterialPoint {
-    id: number,
+    id: number | string,
     name: string,
     prevVector: Vector,
     nextVector: Vector,

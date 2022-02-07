@@ -94,3 +94,12 @@ export const calcMovement = (arr: Array<MaterialPoint>) => {
         }
     }
 }
+
+export const syncVectors = (arrayOfMaterialPoints: Array<MaterialPoint>) => {
+    arrayOfMaterialPoints.forEach(mp => {
+        mp.nextVector.azimuth = mp.prevVector.azimuth;
+        mp.nextVector.value = mp.prevVector.value;
+        mp.nextVector.point.x = mp.prevVector.point.x;
+        mp.nextVector.point.y = mp.prevVector.point.y;
+    });
+}
