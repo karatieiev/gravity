@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {MaterialPoint} from "../../helpers/types";
+import {MaterialPoint} from "../helpers/types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -61,6 +61,7 @@ export const MaterialPointCard: FC<Props> = ({point, onChange, onDelete, disable
                     variant="text"
                     color="error"
                     onClick={() => onDelete(point)}
+                    size="small"
                 >
                     X
                 </Button>
