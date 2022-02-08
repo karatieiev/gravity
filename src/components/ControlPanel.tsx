@@ -1,14 +1,26 @@
-import React, {FC} from "react";
+import React, {FC, useEffect} from "react";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Switch from "@mui/material/Switch";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {useMainContext} from "../context/MainContextProvider";
-import {generateMaterialPoint} from "../helpers/logic";
+import {calcMovement, generateMaterialPoint, syncVectors} from "../helpers/logic";
+import cloneDeep from "lodash/cloneDeep";
 
 export const ControlPanel: FC = () => {
-    const { isProcessing, setProcessing, addPoint } = useMainContext();
+    const { isProcessing, setProcessing, addPoint, materialPoints, replacePoints } = useMainContext();
+
+    useEffect(() => {
+        if (isProcessing) {
+            setTimeout(() => {
+                const mp = cloneDeep(materialPoints);
+                calcMovement(mp);
+                syncVectors(mp);
+                replacePoints(mp);
+            }, 1000);
+        }
+    }, [isProcessing, materialPoints]);
 
     return (
         <Card>
