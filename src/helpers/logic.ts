@@ -5,7 +5,7 @@ export const generateMaterialPoint = (): MaterialPoint => {
     return {
         id: Math.random(),
         name: '',
-        mass: 100000,
+        mass: 1000000,
         prevVector: {
             azimuth: 90,
             value: 100,
@@ -21,7 +21,7 @@ export const generateMaterialPoint = (): MaterialPoint => {
 
 export const calcMovement = (arr: Array<MaterialPoint>) => {
     if (!arr.length) return;
-    const vectors: Array<Array<Vector>> = [[]];
+    const vectors: Vector[][] = [[],[]];
     for (let i=0; i<arr.length-1; i++) {
         for (let j=i; j<arr.length-1; j++) {
             const direction = getDirection(arr[j].prevVector.point, arr[j+1].prevVector.point);
@@ -64,9 +64,9 @@ export const calcMovement = (arr: Array<MaterialPoint>) => {
 
 export const syncVectors = (arrayOfMaterialPoints: Array<MaterialPoint>) => {
     arrayOfMaterialPoints.forEach(mp => {
-        mp.nextVector.azimuth = mp.prevVector.azimuth;
-        mp.nextVector.value = mp.prevVector.value;
-        mp.nextVector.point.x = mp.prevVector.point.x;
-        mp.nextVector.point.y = mp.prevVector.point.y;
+        mp.prevVector.azimuth = mp.nextVector.azimuth;
+        mp.prevVector.value = mp.nextVector.value;
+        mp.prevVector.point.x = mp.nextVector.point.x;
+        mp.prevVector.point.y = mp.nextVector.point.y;
     });
 }
