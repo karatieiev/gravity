@@ -22,23 +22,23 @@ export const MaterialPointCard: FC<Props> = ({point, onChange, onDelete, disable
                 newPoint.name = value;
                 break;
             case "mass":
-                newPoint.mass = value;
+                newPoint.mass = +value;
                 break;
             case "azimuth":
-                newPoint.prevVector.azimuth = value;
-                newPoint.nextVector.azimuth = value;
+                newPoint.prevVector.azimuth = +value;
+                newPoint.nextVector.azimuth = +value;
                 break;
             case "value":
-                newPoint.prevVector.value = value;
-                newPoint.nextVector.value = value;
+                newPoint.prevVector.value = +value;
+                newPoint.nextVector.value = +value;
                 break;
             case "x":
-                newPoint.prevVector.point.x = value;
-                newPoint.nextVector.point.x = value;
+                newPoint.prevVector.point.x = +value;
+                newPoint.nextVector.point.x = +value;
                 break;
             case "y":
-                newPoint.prevVector.point.y = value;
-                newPoint.nextVector.point.y = value;
+                newPoint.prevVector.point.y = +value;
+                newPoint.nextVector.point.y = +value;
                 break;
             default:
                 return;
