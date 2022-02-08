@@ -1,6 +1,24 @@
 import {MaterialPoint, Vector} from "./types";
 import {getDirection, invertAzimuth, sumVectors} from "./vectors";
 
+export const generateMaterialPoint = (): MaterialPoint => {
+    return {
+        id: Math.random(),
+        name: '',
+        mass: 100000,
+        prevVector: {
+            azimuth: 90,
+            value: 100,
+            point: {x: 100, y: 100}
+        },
+        nextVector: {
+            azimuth: 90,
+            value: 100,
+            point: {x: 100, y: 100}
+        }
+    }
+}
+
 export const calcMovement = (arr: Array<MaterialPoint>) => {
     if (!arr.length) return;
     const vectors: Array<Array<Vector>> = [[]];
