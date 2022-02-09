@@ -11,16 +11,16 @@ import cloneDeep from "lodash/cloneDeep";
 export const ControlPanel: FC = () => {
     const { isProcessing, setProcessing, addPoint, materialPoints, replacePoints } = useMainContext();
 
-    useEffect(() => {
-        if (isProcessing) {
-            setTimeout(() => {
-                const mp = cloneDeep(materialPoints);
-                calcMovement(mp);
-                syncVectors(mp);
-                replacePoints(mp);
-            }, 1000);
-        }
-    }, [isProcessing, materialPoints]);
+    // useEffect(() => {
+    //     if (isProcessing) {
+    //         setTimeout(() => {
+    //             const mp = cloneDeep(materialPoints);
+    //             calcMovement(mp);
+    //             syncVectors(mp);
+    //             replacePoints(mp);
+    //         }, 1000);
+    //     }
+    // }, [isProcessing, materialPoints]);
 
     return (
         <Card>
