@@ -1,26 +1,44 @@
-import React, {FC, useEffect} from "react";
+import React, {FC, useEffect, useRef} from "react";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Switch from "@mui/material/Switch";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {useMainContext} from "../context/MainContextProvider";
-import {calcMovement, generateMaterialPoint, syncVectors} from "../helpers/logic";
+import {calcMovement, generateMaterialPoint, needToUpdateContext} from "../helpers/logic";
 import cloneDeep from "lodash/cloneDeep";
+import {MaterialPoint} from "../helpers/types";
 
 export const ControlPanel: FC = () => {
     const { isProcessing, setProcessing, addPoint, materialPoints, replacePoints } = useMainContext();
+    const draftPoints = useRef<Array<MaterialPoint>>([]);
+    const factor = useRef<number>(0);
+    const active = useRef<boolean>(false);
+    
+    const process = () => {
+        if (active.current) {
+            const mp = cloneDeep(draftPoints.current);
+            factor.current = calcMovement(mp);
+            if (factor.current > 1) factor.current = 1;
+            draftPoints.current = mp;
+            if (needToUpdateContext(materialPoints, mp, factor.current)) replacePoints(mp);
+            setTimeout(process, factor.current * 1000);
+        }
+    }
 
-    // useEffect(() => {
-    //     if (isProcessing) {
-    //         setTimeout(() => {
-    //             const mp = cloneDeep(materialPoints);
-    //             calcMovement(mp);
-    //             syncVectors(mp);
-    //             replacePoints(mp);
-    //         }, 1000);
-    //     }
-    // }, [isProcessing, materialPoints]);
+    useEffect(() => {
+        if (isProcessing) {
+            if(draftPoints.current.length === 0) draftPoints.current = cloneDeep(materialPoints);
+            if (!active.current)  {
+                active.current = true;
+                process();
+            }
+        } else {
+            draftPoints.current = [];
+            factor.current = 0;
+            active.current = false;
+        }
+    }, [isProcessing]);
 
     return (
         <Card>

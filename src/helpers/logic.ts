@@ -1,72 +1,75 @@
-import {MaterialPoint, Vector} from "./types";
-import {getDirection, invertAzimuth, sumVectors} from "./vectors";
+import {SummedVector, MaterialPoint, Vector} from "./types";
+import {getDistance, getVector, invertAzimuth, sumVectors} from "./vectors";
 
 export const generateMaterialPoint = (): MaterialPoint => {
     return {
         id: Math.random(),
         name: '',
-        mass: 1000000,
-        prevVector: {
+        mass: 100000,
+        point: {x: 100, y: 100},
+        vector: {
             azimuth: 90,
-            value: 100,
-            point: {x: 100, y: 100}
-        },
-        nextVector: {
-            azimuth: 90,
-            value: 100,
-            point: {x: 100, y: 100}
+            value: 10
         }
     }
 }
 
-export const calcMovement = (arr: Array<MaterialPoint>) => {
-    if (!arr.length) return;
-    const vectors: Vector[][] = [[],[]];
+export const calcMovement = (arr: Array<MaterialPoint>): number => {
+    if (!arr.length) return 100;
+    const vectors: Vector[][] = [[],[],[],[],[],[],[],[]];
+    const summedVectors: SummedVector[] = [];
     for (let i=0; i<arr.length-1; i++) {
         for (let j=i; j<arr.length-1; j++) {
-            const direction = getDirection(arr[j].prevVector.point, arr[j+1].prevVector.point);
+            const vector = getVector(arr[j].point, arr[j+1].point);
             vectors[j].push({
-                azimuth: direction.azimuth,
-                point: {
-                    x: arr[j].prevVector.point.x,
-                    y: arr[j].prevVector.point.y
-                },
-                value: arr[j+1].mass / Math.pow(direction.distance, 2)
+                azimuth: vector.azimuth,
+                value: vector.value < 3 ? 0 : arr[j+1].mass / Math.pow(vector.value, 2)
             });
             vectors[j+1].push({
-                azimuth: invertAzimuth(direction.azimuth),
-                point: {
-                    x: arr[j+1].prevVector.point.x,
-                    y: arr[j+1].prevVector.point.y
-                },
-                value: arr[j].mass / Math.pow(direction.distance, 2)
+                azimuth: invertAzimuth(vector.azimuth),
+                value: vector.value < 3 ? 0 : arr[j].mass / Math.pow(vector.value, 2)
             });
         }
     }
+    let maxDelta = 0;
     for (let i=0; i<arr.length; i++) {
-        let resultVector: Vector | null;
+        let summedVector: SummedVector;
 
         if (vectors.length)
-            resultVector = sumVectors([arr[i].prevVector, ...vectors[i]]);
+            summedVector = sumVectors([arr[i].vector, ...vectors[i]]);
         else
-            resultVector = sumVectors([arr[i].prevVector]);
+            summedVector = sumVectors([arr[i].vector]);
 
-        arr[i].nextVector = {
-            point: {
-                x: resultVector.point.x,
-                y: resultVector.point.y,
-            },
-            azimuth: resultVector.azimuth,
-            value: resultVector.value
-        }
+        maxDelta = Math.max(maxDelta, Math.abs(summedVector.dX), Math.abs(summedVector.dY));
+        summedVectors.push(summedVector);
     }
+    const factor = 1/maxDelta;
+    for (let i=0; i<arr.length; i++) {
+        arr[i].vector = summedVectors[i].vector;
+        arr[i].point.x += summedVectors[i].dX * factor;
+        arr[i].point.y += summedVectors[i].dY * factor;
+    }
+    return factor;
 }
 
-export const syncVectors = (arrayOfMaterialPoints: Array<MaterialPoint>) => {
-    arrayOfMaterialPoints.forEach(mp => {
-        mp.prevVector.azimuth = mp.nextVector.azimuth;
-        mp.prevVector.value = mp.nextVector.value;
-        mp.prevVector.point.x = mp.nextVector.point.x;
-        mp.prevVector.point.y = mp.nextVector.point.y;
-    });
+export const needToUpdateContext = (arr1: Array<MaterialPoint>, arr2: Array<MaterialPoint>, factor: number): boolean => {
+    if (factor > 0.25) return true;
+    let delta = 2;
+    if (factor >= 0.05 && factor < 0.1 ) delta = 3;
+    else if (factor >= 0.03333 && factor < 0.05000 ) delta = 5;
+    else if (factor >= 0.02500 && factor < 0.03333 ) delta = 7;
+    else if (factor >= 0.02000 && factor < 0.02500 ) delta = 9;
+    else if (factor >= 0.01429 && factor < 0.02000 ) delta = 12;
+    else if (factor >= 0.01111 && factor < 0.01429 ) delta = 16;
+    else if (factor >= 0.00909 && factor < 0.01111 ) delta = 20;
+    else if (factor >= 0.00769 && factor < 0.00909 ) delta = 24;
+    else if (factor >= 0.00666 && factor < 0.00769 ) delta = 28;
+    else if (factor >= 0.00526 && factor < 0.00666 ) delta = 34;
+    else if (factor >= 0.00435 && factor < 0.00526 ) delta = 42;
+    else if (factor >= 0.00370 && factor < 0.00435 ) delta = 50;
+    else delta = 65;
+    for(let i=0; i<arr1.length; i++) {
+        if (getDistance(arr1[i].point, arr2[i].point) > delta) return true
+    }
+    return false;
 }

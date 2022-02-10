@@ -3,28 +3,21 @@ export interface Point {
     y: number
 }
 
-export interface Direction {
-    azimuth: number,
-    distance: number
-}
-
 export interface Vector {
-    point: Point,
     azimuth: number,
     value: number
 }
 
-export interface SumVector {
-    basePoint: Point,
-    azimuthPoint: Point,
-    azimuth: number,
-    value: number
+export interface SummedVector {
+    vector: Vector,
+    dX: number,
+    dY: number
 }
 
 export interface MaterialPoint {
     id: number | string,
     name: string,
-    prevVector: Vector,
-    nextVector: Vector,
-    mass: number
+    mass: number,
+    point: Point,
+    vector: Vector
 }

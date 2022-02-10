@@ -19,7 +19,8 @@
     "react-test-renderer": "^17.0.2",
     "typescript": "^4.5.5",
     "web-vitals": "^2.1.4",
-    "lodash": "4.17.21"
+    "lodash": "4.17.21",
+    "react-konva": "17.0.2-5"
   },
   "scripts": {
     "start": "react-scripts start",

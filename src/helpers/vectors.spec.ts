@@ -1,35 +1,35 @@
 import '@testing-library/jest-dom';
-import {getDirection, getDistance, invertAzimuth, sumVectors} from "./vectors";
+import {getVector, getDistance, invertAzimuth, sumVectors} from "./vectors";
 import {Point} from "./types";
 
 const center: Point = { x: 0, y: 0 }
 
 describe('vectors', () => {
 
-    describe('getDirection', () => {
+    describe('getVector', () => {
         test('north', () => {
-            expect(getDirection(center, {x: 0, y: -10})).toEqual({distance: 10, azimuth: 0});
+            expect(getVector(center, {x: 0, y: -10})).toEqual({value: 10, azimuth: 0});
         });
         test('east-north', () => {
-            expect(getDirection(center, {x: 4, y: -4}).azimuth).toBeCloseTo(45);
+            expect(getVector(center, {x: 4, y: -4}).azimuth).toBeCloseTo(45);
         });
         test('east', () => {
-            expect(getDirection(center, {x: 4, y: 0}).azimuth).toBeCloseTo(90);
+            expect(getVector(center, {x: 4, y: 0}).azimuth).toBeCloseTo(90);
         });
         test('east-south', () => {
-            expect(getDirection(center, {x: 4, y: 4}).azimuth).toBeCloseTo(135);
+            expect(getVector(center, {x: 4, y: 4}).azimuth).toBeCloseTo(135);
         });
         test('south', () => {
-            expect(getDirection(center, {x: 0, y: 4}).azimuth).toBeCloseTo(180);
+            expect(getVector(center, {x: 0, y: 4}).azimuth).toBeCloseTo(180);
         });
         test('west-south', () => {
-            expect(getDirection(center, {x: -4, y: 4}).azimuth).toBeCloseTo(225);
+            expect(getVector(center, {x: -4, y: 4}).azimuth).toBeCloseTo(225);
         });
         test('west', () => {
-            expect(getDirection(center, {x: -4, y: 0}).azimuth).toBeCloseTo(270);
+            expect(getVector(center, {x: -4, y: 0}).azimuth).toBeCloseTo(270);
         });
         test('west-north', () => {
-            expect(getDirection(center, {x: -4, y: -4}).azimuth).toBeCloseTo(315);
+            expect(getVector(center, {x: -4, y: -4}).azimuth).toBeCloseTo(315);
         });
     });
 
@@ -51,35 +51,35 @@ describe('vectors', () => {
     describe('sumVectors', () => {
         test('along the x-axis, same direction', () => {
             const result = sumVectors([
-                {point: center, value: 4, azimuth: 90},
-                {point: center, value: 2, azimuth: 90}
+                {value: 4, azimuth: 90},
+                {value: 2, azimuth: 90}
             ]);
-            expect(result.azimuth).toBeCloseTo(90);
-            expect(result.value).toBeCloseTo(6);
+            expect(result.vector.azimuth).toBeCloseTo(90);
+            expect(result.vector.value).toBeCloseTo(6);
         });
         test('along the x-axis, opposite direction', () => {
             const result = sumVectors([
-                {point: center, value: 4, azimuth: 90},
-                {point: center, value: 2, azimuth: 270}
+                {value: 4, azimuth: 90},
+                {value: 2, azimuth: 270}
             ]);
-            expect(result.azimuth).toBeCloseTo(90);
-            expect(result.value).toBeCloseTo(2);
+            expect(result.vector.azimuth).toBeCloseTo(90);
+            expect(result.vector.value).toBeCloseTo(2);
         });
         test('along the y-axis, opposite direction', () => {
             const result = sumVectors([
-                {point: center, value: 4, azimuth: 0},
-                {point: center, value: 2, azimuth: 180}
+                {value: 4, azimuth: 0},
+                {value: 2, azimuth: 180}
             ]);
-            expect(result.azimuth).toBeCloseTo(0);
-            expect(result.value).toBeCloseTo(2);
+            expect(result.vector.azimuth).toBeCloseTo(0);
+            expect(result.vector.value).toBeCloseTo(2);
         });
         test('x-axis same direction, y-axis opposite direction', () => {
             const result = sumVectors([
-                {point: center, value: 4, azimuth: 30},
-                {point: center, value: 4, azimuth: 150}
+                {value: 4, azimuth: 30},
+                {value: 4, azimuth: 150}
             ]);
-            expect(result.azimuth).toBeCloseTo(90);
-            expect(result.value).toBeCloseTo(4);
+            expect(result.vector.azimuth).toBeCloseTo(90);
+            expect(result.vector.value).toBeCloseTo(4);
         });
     });
 
