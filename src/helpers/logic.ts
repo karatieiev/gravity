@@ -19,15 +19,15 @@ export const calcMovement = (arr: Array<MaterialPoint>): number => {
     const vectors: Vector[][] = [[],[],[],[],[],[],[],[]];
     const summedVectors: SummedVector[] = [];
     for (let i=0; i<arr.length-1; i++) {
-        for (let j=i; j<arr.length-1; j++) {
-            const vector = getVector(arr[j].point, arr[j+1].point);
-            vectors[j].push({
+        for (let j=i+1; j<arr.length; j++) {
+            const vector = getVector(arr[i].point, arr[j].point);
+            vectors[i].push({
                 azimuth: vector.azimuth,
-                value: vector.value < 3 ? 0 : arr[j+1].mass / Math.pow(vector.value, 2)
-            });
-            vectors[j+1].push({
-                azimuth: invertAzimuth(vector.azimuth),
                 value: vector.value < 3 ? 0 : arr[j].mass / Math.pow(vector.value, 2)
+            });
+            vectors[j].push({
+                azimuth: invertAzimuth(vector.azimuth),
+                value: vector.value < 3 ? 0 : arr[i].mass / Math.pow(vector.value, 2)
             });
         }
     }
@@ -46,8 +46,8 @@ export const calcMovement = (arr: Array<MaterialPoint>): number => {
     const factor = 1/maxDelta;
     for (let i=0; i<arr.length; i++) {
         arr[i].vector = summedVectors[i].vector;
-        arr[i].point.x += summedVectors[i].dX * factor;
-        arr[i].point.y += summedVectors[i].dY * factor;
+        arr[i].point.x += summedVectors[i].dX;
+        arr[i].point.y += summedVectors[i].dY;
     }
     return factor;
 }

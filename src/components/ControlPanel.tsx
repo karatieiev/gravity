@@ -21,8 +21,9 @@ export const ControlPanel: FC = () => {
             factor.current = calcMovement(mp);
             if (factor.current > 1) factor.current = 1;
             draftPoints.current = mp;
-            if (needToUpdateContext(materialPoints, mp, factor.current)) replacePoints(mp);
-            setTimeout(process, factor.current * 1000);
+            // if (needToUpdateContext(materialPoints, mp, factor.current))
+                replacePoints(mp);
+            setTimeout(process, 0);
         }
     }
 
