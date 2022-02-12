@@ -5,11 +5,11 @@ export const generateMaterialPoint = (): MaterialPoint => {
     return {
         id: Math.random(),
         name: '',
-        mass: 100000,
+        mass: 1000,
         point: {x: 100, y: 100},
         vector: {
             azimuth: 90,
-            value: 10
+            value: 3
         }
     }
 }

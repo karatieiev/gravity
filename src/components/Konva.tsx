@@ -11,7 +11,7 @@ export const Konva: FC = () => {
     }, [materialPoints]);
 
     return (
-        <Stage width={1000} height={1000}>
+        <Stage width={2000} height={2000}>
             <Layer>
                 {materialPoints.map((item, index) =>
                     <Circle

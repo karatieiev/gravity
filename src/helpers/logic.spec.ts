@@ -54,4 +54,31 @@ describe('logic', () => {
         });
     });
 
+    test('x-axis', () => {
+        const materialPoint1: MaterialPoint = {
+            id: 'id',
+            name: 'test',
+            mass: 100000,
+            point: {x: 0, y: 0},
+            vector: {
+                azimuth: 90,
+                value: 0
+            }
+        };
+        const materialPoint2: MaterialPoint = {
+            id: 'id',
+            name: 'test',
+            mass: 100,
+            point: {x: 100, y: 0},
+            vector: {
+                azimuth: 270,
+                value: 0
+            }
+        };
+        calcMovement([materialPoint1, materialPoint2]);
+        expect(materialPoint2.vector.azimuth).toBeCloseTo(270);
+        expect(materialPoint2.vector.value).toBeCloseTo(10);
+        expect(materialPoint2.point.x).toBeCloseTo(90);
+    });
+
 });
