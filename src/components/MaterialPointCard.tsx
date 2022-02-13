@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {MaterialPoint} from "../helpers/types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -17,6 +17,10 @@ interface Props {
 export const MaterialPointCard: FC<Props> = ({point, onChange, onDelete, disabled}) => {
 
     const [value, setValue] = useState<string>(String(point.vector.value));
+
+    useEffect(() => {
+        if (!disabled) setValue(String(point.vector.value));
+    }, [disabled]);
 
     const handleChange = (field: string, value: string | boolean) => {
         const newPoint = cloneDeep(point);

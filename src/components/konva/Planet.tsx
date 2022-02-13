@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useRef} from "react";
+import React, {FC, useEffect, useRef, useState} from "react";
 import {Circle, Line} from "react-konva";
 import {ChangePlanetEvent, Point} from "../../helpers/types";
-import {sumVectors} from "../../helpers/vectors";
+import {getVector, sumVectors} from "../../helpers/vectors";
 
 interface Props {
     id: number,
@@ -19,17 +19,17 @@ interface Props {
 
 export const Planet: FC<Props> = ({
     isProcessing, x, y, showPath, azimuth,
-    color, index, name, onChange
+    color, name, onChange
 }) => {
     const pathPoints = useRef<number[]>([]);
-    const directionPoint = useRef<Point>({x: 180, y: 100});
+    const [directionPoint, setDirectionPoint] = useState<Point>({x: 180, y: 100})
 
     const updateDirection = () => {
-        const summedVector = sumVectors([{azimuth, value: 100}]);
-        directionPoint.current = {
+        const summedVector = sumVectors([{azimuth, value: 80}]);
+        setDirectionPoint({
             x: x + summedVector.dX,
             y: y + summedVector.dY
-        }
+        });
     }
 
     useEffect(() => {
@@ -57,7 +57,12 @@ export const Planet: FC<Props> = ({
                     y: e.target.y(),
                     azimuth
                 })}
-                onDragEnd={updateDirection}
+                onDragEnd={e => onChange({
+                    name: e.target.name(),
+                    x: e.target.x(),
+                    y: e.target.y(),
+                    azimuth
+                })}
             />
             <Line
                 opacity={0.2}
@@ -69,16 +74,27 @@ export const Planet: FC<Props> = ({
             {!isProcessing &&
                 <>
                     <Circle
-                        x={directionPoint.current.x}
-                        y={directionPoint.current.y}
+                        x={directionPoint.x}
+                        y={directionPoint.y}
                         radius={5}
                         fill="#888"
+                        draggable
+                        onDragMove={e => {
+                            const vector = getVector({x,y}, {x: e.target.x(), y: e.target.y()})
+                            onChange({
+                                name,
+                                x,
+                                y,
+                                azimuth: vector.azimuth
+                            });
+                            updateDirection();
+                        }}
                     />
                     <Line
                         stroke="#888"
                         strokeWidth={1}
                         lineCap="round"
-                        points={[x,y,directionPoint.current.x,directionPoint.current.y]}
+                        points={[x,y,directionPoint.x,directionPoint.y]}
                     />
                 </>
             }
