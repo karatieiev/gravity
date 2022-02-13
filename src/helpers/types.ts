@@ -15,9 +15,16 @@ export interface SummedVector {
 }
 
 export interface MaterialPoint {
-    id: number | string,
+    id: number,
     name: string,
     mass: number,
     point: Point,
-    vector: Vector
+    vector: Vector,
+    color: string
+    showPath?: boolean
+}
+
+export interface Path {
+    id: number,
+    points: Point[]
 }

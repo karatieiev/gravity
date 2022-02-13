@@ -1,6 +1,7 @@
 import React, {createContext, useState, useContext, FC, useRef} from "react";
 import {MaterialPoint} from "../helpers/types";
 import cloneDeep from "lodash/cloneDeep";
+import {freeColor} from "../helpers/colors";
 
 interface ContextProps {
     materialPoints: MaterialPoint[],
@@ -39,6 +40,7 @@ export const MainContextProvider: FC = ({children}) => {
     }
 
     const removePoint = (point: MaterialPoint) => {
+        freeColor(point.id);
         setPoints(prevState => prevState.filter(item => item.id !== point.id));
     }
 

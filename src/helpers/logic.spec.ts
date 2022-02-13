@@ -8,10 +8,11 @@ describe('logic', () => {
     describe('calcMovement', () => {
         test('uniform rectilinear motion of one object along the x-axis', () => {
             const materialPoint: MaterialPoint = {
-                id: 'id',
+                id: 1,
                 name: 'test',
                 mass: 100,
                 point: center,
+                color: 'red',
                 vector: {
                     azimuth: 90,
                     value: 10
@@ -25,20 +26,22 @@ describe('logic', () => {
 
         test('x-axis', () => {
             const materialPoint1: MaterialPoint = {
-                id: 'id',
+                id: 1,
                 name: 'test',
                 mass: 100,
                 point: {x: 0, y: 0},
+                color: 'red',
                 vector: {
                     azimuth: 90,
                     value: 0
                 }
             };
             const materialPoint2: MaterialPoint = {
-                id: 'id',
+                id: 1,
                 name: 'test',
                 mass: 100,
                 point: {x: 10, y: 0},
+                color: 'red',
                 vector: {
                     azimuth: 270,
                     value: 1
@@ -56,20 +59,22 @@ describe('logic', () => {
 
     test('x-axis', () => {
         const materialPoint1: MaterialPoint = {
-            id: 'id',
+            id: 1,
             name: 'test',
             mass: 100000,
             point: {x: 0, y: 0},
+            color: 'red',
             vector: {
                 azimuth: 90,
                 value: 0
             }
         };
         const materialPoint2: MaterialPoint = {
-            id: 'id',
+            id: 1,
             name: 'test',
             mass: 100,
             point: {x: 100, y: 0},
+            color: 'red',
             vector: {
                 azimuth: 270,
                 value: 0

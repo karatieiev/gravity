@@ -1,16 +1,20 @@
 import {SummedVector, MaterialPoint, Vector} from "./types";
 import {getDistance, getVector, invertAzimuth, sumVectors} from "./vectors";
+import {assignColor} from "./colors";
 
 export const generateMaterialPoint = (): MaterialPoint => {
+    const id = Math.random();
     return {
-        id: Math.random(),
+        id,
         name: '',
         mass: 1000,
         point: {x: 100, y: 100},
         vector: {
             azimuth: 90,
-            value: 3
-        }
+            value: 3.1
+        },
+        color: assignColor(id),
+        showPath: true
     }
 }
 
@@ -54,8 +58,9 @@ export const calcMovement = (arr: Array<MaterialPoint>): number => {
 
 export const needToUpdateContext = (arr1: Array<MaterialPoint>, arr2: Array<MaterialPoint>, factor: number): boolean => {
     if (factor > 0.25) return true;
-    let delta = 2;
-    if (factor >= 0.05 && factor < 0.1 ) delta = 3;
+    let delta;
+    if (factor >= 0.1) delta = 2;
+    else if (factor >= 0.05 && factor < 0.1 ) delta = 3;
     else if (factor >= 0.03333 && factor < 0.05000 ) delta = 5;
     else if (factor >= 0.02500 && factor < 0.03333 ) delta = 7;
     else if (factor >= 0.02000 && factor < 0.02500 ) delta = 9;
