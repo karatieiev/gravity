@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
-import {MaterialPoint, Point} from "./types";
-import {calcMovement} from "./logic";
+import {MaterialPoint, Point} from "../helpers/types";
+import {calcMovement} from "../helpers/logic";
 
 const center: Point = { x: 0, y: 0 }
 

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
-import {getVector, getDistance, invertAzimuth, sumVectors} from "./vectors";
-import {Point} from "./types";
+import {getVector, getDistance, invertAzimuth, sumVectors} from "../helpers/vectors";
+import {Point} from "../helpers/types";
 
 const center: Point = { x: 0, y: 0 }
 
