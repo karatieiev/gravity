@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useRef} from "react";
 import {Circle, Line} from "react-konva";
-import {ChangePlanetEvent} from "../../helpers/types";
+import {ChangePlanetEvent, Point} from "../../helpers/types";
+import {sumVectors} from "../../helpers/vectors";
 
 interface Props {
     id: number,
@@ -16,41 +17,71 @@ interface Props {
     azimuth: number
 }
 
-export const Planet: FC<Props> = (props) => {
-    const points = useRef<number[]>([]);
+export const Planet: FC<Props> = ({
+    isProcessing, x, y, showPath, azimuth,
+    color, index, name, onChange
+}) => {
+    const pathPoints = useRef<number[]>([]);
+    const directionPoint = useRef<Point>({x: 180, y: 100});
+
+    const updateDirection = () => {
+        const summedVector = sumVectors([{azimuth, value: 100}]);
+        directionPoint.current = {
+            x: x + summedVector.dX,
+            y: y + summedVector.dY
+        }
+    }
 
     useEffect(() => {
-        if (props.isProcessing && props.showPath) {
-            points.current.push(props.x);
-            points.current.push(props.y);
+        if (isProcessing && showPath) {
+            pathPoints.current.push(x);
+            pathPoints.current.push(y);
         }
-        if (!props.showPath) points.current = [];
-    }, [props.x, props.y, props.isProcessing, props.showPath]);
+        if (!showPath) pathPoints.current = [];
+        if (!isProcessing) updateDirection();
+    }, [x, y, isProcessing, showPath]);
 
     return (
         <>
             <Circle
                 opacity={1}
-                x={props.x}
-                y={props.y}
+                x={x}
+                y={y}
                 radius={10}
-                fill={props.color}
+                fill={color}
                 draggable
-                name={props.name}
-                onDragMove={e => props.onChange({
+                name={name}
+                onDragMove={e => onChange({
                     name: e.target.name(),
                     x: e.target.x(),
                     y: e.target.y(),
-                    azimuth: props.azimuth
+                    azimuth
                 })}
+                onDragEnd={updateDirection}
             />
             <Line
                 opacity={0.2}
-                stroke={props.color}
+                stroke={color}
                 strokeWidth={1}
                 lineCap="round"
-                points={points.current}
+                points={pathPoints.current}
             />
+            {!isProcessing &&
+                <>
+                    <Circle
+                        x={directionPoint.current.x}
+                        y={directionPoint.current.y}
+                        radius={5}
+                        fill="#888"
+                    />
+                    <Line
+                        stroke="#888"
+                        strokeWidth={1}
+                        lineCap="round"
+                        points={[x,y,directionPoint.current.x,directionPoint.current.y]}
+                    />
+                </>
+            }
         </>
     );
 }
