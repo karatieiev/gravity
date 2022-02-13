@@ -9,13 +9,13 @@ export const App: FC = () => {
 
     return (
         <Grid container spacing={0}>
-            <Grid item xs={1.5}>
+            <Grid item xs={2}>
                 <Box sx={{mb: 1}}>
                     <ControlPanel />
                 </Box>
                 <MaterialPointsList />
             </Grid>
-            <Grid item xs={10.5}>
+            <Grid item xs={10}>
                 <Konva />
             </Grid>
         </Grid>
