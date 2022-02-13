@@ -28,3 +28,10 @@ export interface Path {
     id: number,
     points: Point[]
 }
+
+export interface ChangePlanetEvent {
+    name: string,
+    x: number,
+    y: number,
+    azimuth: number
+}

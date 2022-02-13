@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import {ControlPanel} from "./components/ControlPanel";
 import {MaterialPointsList} from "./components/MaterialPointsList";
-import {Konva} from "./components/Konva";
+import {Konva} from "./components/konva/Konva";
 
 export const App: FC = () => {
 

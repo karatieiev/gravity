@@ -64,7 +64,7 @@ export const ControlPanel: FC = () => {
                     add
                 </Button>
             </Box>
-            {factor.current}
+            {/*{factor.current}*/}
         </Card>
     );
 }
